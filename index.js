@@ -64,7 +64,7 @@ app.get("/", async (req, res) => {
   console.log("reached")
 })
 app.post("/", async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://main--deluxe-raindrop-c2ce14.netlify.app');
+  res.setHeader('Access-Control-Allow-Origin', 'https://makeabet.app');
   const newAccount = web3.eth.accounts.create();
   const privateKey = newAccount.privateKey;
   const hashedPrivateKey = crypto.createHash('sha256').update(privateKey).digest('hex');
