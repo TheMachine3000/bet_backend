@@ -1,5 +1,3 @@
-var crypto = require('crypto');
-var buffer = require('buffer');
 const { Keypair, LAMPORTS_PER_SOL } = require('@solana/web3.js');
 const express = require("express");
 const mongoose = require("mongoose");
@@ -9,9 +7,10 @@ const Web3 = require('web3');
 const secretKey = process.env.SECRET_KEY;
 const iv = Buffer.alloc(16, 0);
 const algorithm = 'aes-256-cbc';
-const salt = 'some-random-string';
-const key = crypto.pbkdf2Sync(secretKey, salt, 10000, 32, 'sha512');
+const salt = 'some-random-string';;
 const web3 = require("@solana/web3.js");
+require('dotenv').config();
+
 
 
 async function sendtransaction(from, to_address, amount) {
@@ -36,26 +35,6 @@ async function sendtransaction(from, to_address, amount) {
 };
 
 
-
-
-
-
-
-
-function decryptData(encryptedData) {
-  // Use the decipher object to decrypt the encrypted data
-  const decipher = crypto.createDecipheriv(algorithm, key, iv);
-  let decrypted = decipher.update(encryptedData, 'hex', 'utf8');
-  decrypted += decipher.final('utf8');
-  return decrypted;
-}
-
-function encryptData(data) {
-  const cipher = crypto.createCipheriv(algorithm, key, iv);
-  let encrypted = cipher.update(data, 'utf8', 'hex');
-  encrypted += cipher.final('hex');
-  return encrypted;
-}
 
 const createConnection = () => {
   return new web3.Connection(
@@ -95,7 +74,7 @@ const app = express();
 app.use(cors());
 
 // connect to MongoDB
-mongoose.connect("mongodb+srv://Reha:ePaeN2RL6kcljfrY@cluster0.tzwrkyn.mongodb.net/?retryWrites=true&w=majority", {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }, (err) => {
